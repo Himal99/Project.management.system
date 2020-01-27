@@ -1,0 +1,49 @@
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Client</th>
+            <th>Budget</th>
+            <th>Dateline</th>
+            <th style="text-align: center">Employees</th>
+            <th>Created</th>
+            <th>Status</th>
+            
+            <th style="text-align: center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+
+            <td th:text="${record.id}"> </td>
+            <td th:text="${record.name}"> </td>
+    
+            <td><a href="javascript:void(0)" class="client-dialog" th:data="${record.client.toJSON()}" th:rel="${record.id}" th:text="${record.client.name}"></a>
+            </td>
+            <td th:text="${record.budget}"> </td>
+            <td th:text="${record.dateline}"> </td>
+            <td style="text-align: center">
+                <a href="javascript:void(0)" class="btn btn-default btn-xs add-hover emp-detail-btn " th:rel="${record.id}" th:text="${record.employees.size()}">
+                    </a>
+                
+                <a href="javascript:void(0)" class="btn btn-success btn-xs btn-add-employees " th:rel="${record.id}" >
+                    <span class="glyphicon glyphicon-plus"></span></a>
+                    
+            </td>
+             <td th:text="${#dates.format(record.created, 'yyy-MM-dd hh:mm:ss')}"> </td>
+             <td  th:style="'background:'+${record.status.get(record.status.size()-1).color}" ><span  class=" btn btn-default btn-xs fa fa-exchange"></span> </td>
+           
+            <td style="text-align: center">
+                <a th:href="@{'/' + ${pageURI} + '/edit/' +${record.id}}" class="btn btn-warning btn-xs edit-btn" th:rel="${record.id}" th:title="@{'Edit '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-pencil"></span></a>
+                <a th:href="@{'/' + ${pageURI} + '/delete/' +${record.id}}" onclick="return confirm('are you sure want to delete?')" class="btn btn-danger btn-xs delete-btn" th:rel="${record.id}" th:title="@{'Delete '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-trash"></span></a>
+                      <a  href="javascript:void(0)" class="btn btn-default btn-xs fa fa-eye project-detail" th:rel="${record.id}">
+                    </a>
+            </td>
+
+
+
+        </tr>
+    </tbody></table>

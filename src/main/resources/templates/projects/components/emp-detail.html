@@ -1,0 +1,107 @@
+
+<!-- Modal -->
+<div  class="modal fade" id="employees-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div  class="modal-dialog" role="document">
+    <div  style="border-radius: 5px" class="modal-content">
+      <div style="background: #00ccff" class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Employees</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <div class="col-xs-6">
+       <table class="table table-bordered table-hover" id="employee-list-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+           
+            <th style="text-align: center">Action</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody">
+        
+        
+    </tbody></table>
+          </div>
+          
+           <div class="col-md-6">
+          <!-- DIRECT CHAT PRIMARY -->
+          <div class="box box-primary direct-chat direct-chat-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Send Email</h3>
+
+              
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <!-- Conversations are loaded here -->
+              <div class="direct-chat-messages">
+                <!-- Message. Default to the left -->
+                <div class="direct-chat-msg">
+                    <strong>To :</strong>
+                    <input style="width:200px" type="text" name="selectemail" id="inputemail"/>
+                  <!-- /.direct-chat-info -->
+                  
+                  <!-- /.direct-chat-text -->
+                </div>
+                <!-- /.direct-chat-msg -->
+
+                <!-- Message to the right -->
+                <div class="direct-chat-msg right">
+                 
+                  <!-- /.direct-chat-info -->
+                  
+                  <!-- /.direct-chat-text -->
+                </div>
+                <!-- /.direct-chat-msg -->
+              </div>
+              <!--/.direct-chat-messages-->
+
+              <!-- Contacts are loaded here -->
+              <div class="direct-chat-contacts">
+                <ul class="contacts-list">
+                  <li>
+                    <a href="#">
+                      <img class="contacts-list-img" src="..//webjars/adminlte/2.3.11/dist/img/user1-128x128.jpg" alt="User Image">
+
+                      <div class="contacts-list-info">
+                            <span class="contacts-list-name">
+                              Count Dracula
+                              <small class="contacts-list-date pull-right">2/28/2015</small>
+                            </span>
+                        <span class="contacts-list-msg">How have you been? I was...</span>
+                      </div>
+                      <!-- /.contacts-list-info -->
+                    </a>
+                  </li>
+                  <!-- End Contact Item -->
+                </ul>
+                <!-- /.contatcts-list -->
+              </div>
+              <!-- /.direct-chat-pane -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <form action="#" method="post">
+                <div class="input-group">
+                  <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn btn-warning btn-flat">Send</button>
+                      </span>
+                </div>
+              </form>
+            </div>
+            <!-- /.box-footer-->
+          </div>
+          <!--/.direct-chat -->
+        </div>
+          
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
+   
+      </div>
+    </div>
+  </div>
+</div>

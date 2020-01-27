@@ -1,0 +1,81 @@
+<div th:replace="shared/header"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <a href="javascript:void(0)" class="btn btn-primary btn-xs add-btn" th:title="@{'create '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-plus"></span></a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="view-table" th:include="${viewpath}+'/table'">
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    <li><a href="#">«</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">»</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div th:include="${viewpath}+'/components/form-dialog'"></div>
+    <div th:replace="shared/footer"></div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.add-btn').on('click', function () {
+                var $dialog = $('#form-modal');
+                $dialog.find('#modal-title').html('create ' + pageTitle);
+                $dialog.modal();
+                $('input').val('');
+                $('input[type=checkbox]').attr('checked',false).val('1');
+                $('input[name=id]').val(0);
+                return false;
+            });
+            $('#view-table').on('click','.edit-btn', function () {
+                var $id = $(this).attr('rel');
+                $.getJSON('/' + pageURI + '/json/' + $id, function (data) {
+                    console.log(data);
+                    var $dialog = $('#form-modal');
+                    $dialog.find('#modal-title').html('Edit ' + pageTitle);
+                    $('input[name=id]').val(data.id);
+                    $('input[name=name]').val(data.name);
+                    $('input[name=email]').val(data.email);
+                    $('input[name=address]').val(data.address);
+                    $('input[name=contactNo]').val(data.contactNo);
+                    $('input[name=website]').val(data.website);
+                     $('input[name=status]').attr('checked', data.status);
+                    $dialog.modal();
+
+                });
+                return false;
+            });
+            
+            $('#app-form').on('submit', function(){
+                $.post('/' + pageURI +'/json',$(this).serialize(),
+                function (data){
+                    if(data==='success'){
+                       $('#form-modal').modal('hide');
+                       $.get('/' + pageURI +'/table',function (data){
+                           $('#view-table').html(data);
+                       })
+                    }
+                });
+                return false;
+            });
+
+
+
+        });
+    </script>

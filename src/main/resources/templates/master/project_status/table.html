@@ -1,0 +1,33 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Created</th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+
+            <td th:text="${record.id}"> </td>
+            <td th:text="${record.name}"> </td>
+            <td th:text="${record.color}"> </td>
+
+
+
+            <td th:text="${record.created}"> </td>
+
+            <td>
+                <a th:href="@{'/' + ${pageURI} + '/edit/' +${record.id}}" class="btn btn-warning btn-xs edit-btn" th:rel="${record.id}" th:title="@{'Edit '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-pencil"></span></a>
+                <a th:href="@{'/' + ${pageURI} + '/delete/' +${record.id}}" onclick="return confirm('are you sure want to delete?')" class="btn btn-danger btn-xs delete-btn" th:rel="${record.id}" th:title="@{'Delete '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+
+
+
+        </tr>
+    </tbody></table>

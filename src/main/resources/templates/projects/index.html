@@ -1,0 +1,292 @@
+<div th:replace="shared/header"></div>
+<link rel="stylesheet" href="/webjars/adminlte/2.3.11/plugins/datepicker/datepicker3.css">
+<div th:replace="${viewpath}+'/components/charts'"></div>
+<div class="box-body col-md-4">
+
+
+    <a class="btn btn-app projects-modal">
+        <span class="badge bg-green add-projects "></span>
+        <i class="fa fa-barcode"></i> Projects
+    </a>
+    <a class="btn btn-app employees-modal">
+        <span class="badge bg-purple add-employees"></span>
+        <i class="fa fa-users "></i> Employee
+    </a>
+    <a class="btn btn-app">
+        <span class="badge bg-teal">0</span>
+        <i class="fa fa-inbox"></i> Orders
+    </a>
+    <a class="btn btn-app">
+        <span class="badge bg-yellow">0</span>
+        <i class="fa fa-bullhorn"></i> Notifications
+    </a>
+
+</div>
+
+<div  style="float: right" class="input-group col-md-6">
+    <br>
+    <br>
+    <div style="float: right" class="input-group col-md-8">
+
+        <input type="text" class="form-control" placeholder="Search anything"/>
+
+
+        <span class="input-group-btn">
+
+            <button type="button" class="btn btn-info btn-primary">Search</button>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <a href="javascript:void(0)" class="btn btn-primary btn-xs add-btn" th:title="@{'create '+ ${pageTitle}}">
+                    <span class="glyphicon glyphicon-plus"></span></a>
+                <label class="pull-right">Current Projects</label>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="view-table" th:include="${viewpath}+'/table'">
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    <li><a href="#">«</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">»</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div th:include="${viewpath}+'/components/form-dialog'"></div>
+<div class="client-form" th:include="shared/components/client-form-dialog"></div>
+<div th:include="${viewpath}+'/components/p-detail'"></div>
+<div th:include="${viewpath}+'/components/emp-detail'"></div>
+<div th:include="${viewpath}+'/components/client-detail'"></div>
+<div th:include="${viewpath}+'/components/employee-add'"></div>
+<div th:include="${viewpath}+'/components/add-client'"></div>
+
+
+
+<div th:replace="shared/footer"></div>
+<script src="/webjars/adminlte/2.3.11/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $.getJSON('/clients/json', function (data) {
+            $dropdown = $('select[name=client]');
+            $('<option/>').val('').html('select client')
+                    .appendTo($dropdown);
+            $.each(data, function (index, row) {
+                $('<option/>').val(row.id).html(row.name)
+                        .appendTo($dropdown);
+            })
+        })
+
+        $.getJSON('/master/project-status/json', function (data) {
+            $dropdown = $('select[name=status]');
+            $('<option/>').val('').html('select status')
+                    .appendTo($dropdown);
+            $.each(data, function (index, row) {
+                $('<option/>').val(row.id).html(row.name)
+                        .appendTo($dropdown);
+            })
+        })
+        $.getJSON('/employees/json', function (data) {
+            $dropdown = $('select[name=employees]');
+            $('<option/>').val('').html('select Employees')
+                    .appendTo($dropdown);
+            $.each(data, function (index, row) {
+                $('<option/>').val(row.id).html(row.fullName)
+                        .appendTo($dropdown);
+            })
+        })
+
+        $('.add-btn').on('click', function () {
+            var $dialog = $('#form-modal');
+            $dialog.find('#modal-title').html('create ' + pageTitle);
+            $dialog.modal();
+            $('input').val('');
+            $('select[name=client]').val('');
+            $('textarea[name=description]').val('');
+            $('input[name=id]').val(0);
+            return false;
+        });
+        $('#view-table').on('click', '.edit-btn', function () {
+            var $id = $(this).attr('rel');
+            $.getJSON('/' + pageURI + '/json/' + $id, function (data) {
+                console.log(data);
+                var $dialog = $('#form-modal');
+                $dialog.find('#modal-title').html('Edit ' + pageTitle);
+                $('input[name=id]').val(data.id);
+                $('input[name=name]').val(data.name);
+                $('input[name=email]').val(data.client);
+                $('input[name=budget]').val(data.budget);
+                $('input[name=dateline]').val(data.dateline);
+                $('textarea[name=description]').val(data.description);
+                $('select[name=client]').val(data.client.id);
+                $dialog.modal();
+            });
+            return false;
+        });
+        $('#app-form').on('submit', function () {
+            $.post('/' + pageURI + '/json', $(this).serialize(),
+                    function (data) {
+                        if (data === 'success') {
+                            $('#form-modal').modal('hide');
+                            $.get('/' + pageURI + '/table', function (data) {
+                                $('#view-table').html(data);
+                            });
+                        }
+                    });
+            return false;
+        });
+        $('.add-category').on('click', function () {
+            $('.client-dialog').modal();
+        })
+
+        $(".knob").knob();
+        $('.project-detail').on('click', function () {
+            $('#project-modal').modal();
+        })
+
+        $('.client-dialog').hover(function () {
+
+        })
+
+        $('#view-table').on('click', '.emp-detail-btn', function () {
+            var $id = $(this).attr('rel');
+            $.getJSON('/projects/employees/' + $id, function (data) {
+                $table = $('#employee-list-table tbody');
+                $table.find('tr').remove();
+                $.each(data, function (i, row) {
+                    var $tr = $('<tr class="employee-row" data-email="' + row.email + '"/>');
+                    $('<td/>').html(row.id).appendTo($tr);
+                    $('<td/>').html(row.fullName).appendTo($tr);
+                    $('<td><a data-project-id="' + $id + '" rel="' + row.id + '"  class="btn btn-danger remove-employee"><span class="glyphicon glyphicon-trash"></span></a></td>').appendTo($tr);
+                    $table.append($tr);
+                });
+                $('#employees-detail').modal();
+            });
+
+            $('#employee-list-table').on('click', '.employee-row', function () {
+                console.log($(this).attr('data-email'));
+                var $email = $(this).attr('data-email');
+
+                $('#employees-detail').find('#inputemail').val($email);
+                $('input[name=selectemail])').html('');
+                return false;
+            })
+
+
+
+            $("#employee-list-table").on('click', '.remove-employee', function () {
+
+                if (confirm('are you sure to remove ?'))
+                {
+                    var $this = $(this);
+                    $projectId = $this.attr('data-project-id');
+                    $employeeId = $this.attr('rel');
+                    var $data = {
+                        projectId: $projectId,
+                        employeeId: $employeeId
+
+                    };
+                    $.post('/' + pageURI + '/remove-employee', $data, function (data) {
+                        $this.parent().parent().slideUp();
+                        $.get('/' + pageURI + '/table', function (data) {
+                            $('#view-table').html(data);
+                        });
+                    })
+                }
+
+            })
+        })
+
+
+        $('.datepicker').datepicker();
+
+        $.getJSON('/projects/json', function (data) {
+            $('.add-projects').html(data.length);
+        })
+
+        $.getJSON('/employees/json', function (data) {
+            $('.add-employees').html(data.length);
+        })
+
+
+        $('.client-dialog').on('click', function () {
+            var $id = $(this).attr('rel');
+            var $data = $(this).attr('data');
+
+            $.getJSON('/projects/json/' + $id, function (data) {
+                var $dialog = $('#client-modal');
+                $dialog.find('#project').html(data.name);
+                $dialog.find('#description').html(data.description);
+            })
+
+            $.getJSON('/' + pageURI + '/getclients/' + $id, function (data) {
+                console.log(data);
+                var $dialog = $('#client-modal');
+                console.log(data.name);
+                $dialog.find('#name').html(data.name);
+                $dialog.find('#contact').html(data.contactNo);
+                $dialog.find('#email').html(data.email);
+                $dialog.find('#address').html(data.address);
+
+
+                $dialog.modal();
+            });
+
+        });
+
+
+
+        $('#view-table').on('click','.btn-add-employees', function () {
+            var $id = $(this).attr('rel');
+            $('#add-employee-form input[name=project]').val($id);
+            $.getJSON('/employees/project-notassigned/' + $id, function (data) {
+                $dropdown = $('select[name=employee]');
+                $dropdown.find('option').remove();
+                $('<option/>').val('').html("select employees to add").appendTo($dropdown);
+                $.each(data, function (index, row) {
+                    $('<option/>').val(row.id).html(row.fullName).appendTo($dropdown);
+                    
+                });
+                $('#add-employee-modal').modal();
+             });
+
+        });
+
+        $('#add-employee-form').on('submit', function () {
+
+            $.post('/' + pageURI + '/add-employee/', $(this).serialize(), function (data) {
+                $('#add-employee-modal').modal('hide');
+                $.get('/' + pageURI + '/table', function (data) {
+                    $('#view-table').html(data);
+                });
+            })
+            return false;
+        })
+
+        $('.client-add-btn').on('click', function () {
+            $('#add-client-btn').modal();
+        })
+
+
+    });
+
+
+
+
+
+
+</script>

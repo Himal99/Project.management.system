@@ -1,0 +1,29 @@
+
+<!-- Modal -->
+<div  class="modal fade" id="add-employee-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div  class="modal-dialog" role="document">
+    <div style="border-radius: 5px"  class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Project Detail</h4>
+      </div>
+        <form class="form-group" id="add-employee-form" method="post">
+      <div class="modal-body col-md-12">
+           <div class="form-group">
+                            <label>Assign Employees</label>
+                            <select name="employee" class="form-control" required multiple>
+                               
+                            </select>
+
+
+                        </div>
+      </div>
+      <div class="modal-footer">
+          <input type="hidden" id="project" name="project"/>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+
+<!-- Modal -->
+<div  class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div  class="modal-dialog" role="document">
+    <div style="border-radius: 5px"  class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Project Detail</h4>
+      </div>
+      <div class="modal-body col-md-12">
+          <form class="form-group" method="post" autocomplete="off">
+          <div  class="row">
+              <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" class="form-control" required/>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Client</label>
+                            <div class="input-group">
+
+                                <select  name="client" class="form-control" required>
+
+                                </select>
+
+                                <span class="input-group-btn">
+                                    <a href="javascript:void(0)" class="btn btn-primary client-add-btn">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </a>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+               
+
+                
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea  name="description" class="form-control" required></textarea>
+
+                        </div>
+                    </div>
+               
+               
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Budget</label>
+                            <input type="text" name="budget" class="form-control" required/>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        
+                        <div class="form-group">
+                <label>Date:</label>
+
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" readonly="readonly" pattern="yyyy-mm-dd" class="form-control pull-right datepicker" >
+                </div>
+                <!-- /.input group -->
+              </div>
+                    </div>
+              
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select  name="status" class="form-control" required>
+
+                            </select>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Assign Employees</label>
+                            <select  name="employees" class="form-control" required multiple>
+
+                            </select>
+
+
+                        </div>
+                    </div>
+                     </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
