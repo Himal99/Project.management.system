@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -32,6 +33,7 @@ public class Employee extends Masterentity {
     private String panNo;
     @Column(name = "created_date", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date created;
     @Column(name = "modified_date")
     @Temporal(TemporalType.TIMESTAMP)

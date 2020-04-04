@@ -52,7 +52,7 @@ public class Project extends Masterentity {
             joinColumns = {
                 @JoinColumn(name = "project_id", referencedColumnName = "id")},
             inverseJoinColumns = {
-                @JoinColumn(name = "status_id", referencedColumnName = "id")})
+                @JoinColumn(name = "status_id", referencedColumnName = "id",updatable = true)})
     @ManyToMany()
     @JsonIgnore
     private List<MasterProjectStatus> status;

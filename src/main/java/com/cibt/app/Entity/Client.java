@@ -5,12 +5,15 @@
  */
 package com.cibt.app.Entity;
 
+import com.mysql.cj.jdbc.Blob;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Type;
 
 /**
  *
@@ -22,7 +25,11 @@ public class Client extends Masterentity {
 
     @Column(name = "name")
     private String name;
+    @Column(name = "image")
+    
+    private String image;
     @Column(name = "email")
+
     private String email;
     @Column(name = "contact_no")
     private String contactNo;
@@ -42,9 +49,9 @@ public class Client extends Masterentity {
 
     public Client() {
     }
-    
-     public Client(int id) {
-         this.id=id;
+
+    public Client(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -115,9 +122,17 @@ public class Client extends Masterentity {
     public String toString() {
         return "Client{" + "name=" + name + ", email=" + email + ", contactNo=" + contactNo + ", address=" + address + ", website=" + website + '}';
     }
-    
-    public String toJSON(){
-        return "{\"id\":"+id +",\"name\":\""+name+"\"}";
-    } 
-  
+
+    public String toJSON() {
+        return "{\"id\":" + id + ",\"name\":\"" + name + "\"}";
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }
