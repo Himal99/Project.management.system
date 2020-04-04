@@ -1,6 +1,7 @@
 <div th:replace="shared/header"></div>
 <link rel="stylesheet" href="/webjars/adminlte/2.3.11/plugins/datepicker/datepicker3.css">
 <div th:replace="${viewpath}+'/components/charts'"></div>
+
 <div class="box-body col-md-4">
 
 
@@ -73,6 +74,8 @@
 <div th:include="${viewpath}+'/components/client-detail'"></div>
 <div th:include="${viewpath}+'/components/employee-add'"></div>
 <div th:include="${viewpath}+'/components/add-client'"></div>
+<div th:include="${viewpath}+'/components/delete'"></div>
+<div th:include="${viewpath}+'/components/change-status'"></div>
 
 
 
@@ -81,51 +84,76 @@
 <script>
     $(document).ready(function () {
 
-        $.getJSON('/clients/json', function (data) {
-            $dropdown = $('select[name=client]');
-            $('<option/>').val('').html('select client')
-                    .appendTo($dropdown);
-            $.each(data, function (index, row) {
-                $('<option/>').val(row.id).html(row.name)
-                        .appendTo($dropdown);
-            })
-        })
+        /*  $.getJSON('/clients/json', function (data) {
+         $dropdown = $('select[name=client]');
+         $('<option/>').val('').html('select client')
+         .appendTo($dropdown);
+         $.each(data, function (index, row) {
+         $('<option/>').val(row.id).html(row.name)
+         .appendTo($dropdown);
+         })
+         }) */
 
-        $.getJSON('/master/project-status/json', function (data) {
-            $dropdown = $('select[name=status]');
-            $('<option/>').val('').html('select status')
-                    .appendTo($dropdown);
-            $.each(data, function (index, row) {
-                $('<option/>').val(row.id).html(row.name)
-                        .appendTo($dropdown);
-            })
-        })
-        $.getJSON('/employees/json', function (data) {
-            $dropdown = $('select[name=employees]');
-            $('<option/>').val('').html('select Employees')
-                    .appendTo($dropdown);
-            $.each(data, function (index, row) {
-                $('<option/>').val(row.id).html(row.fullName)
-                        .appendTo($dropdown);
-            })
-        })
 
+        loadcombo({
+//            for clients
+            url: '/clients/json',
+            selector: 'select[name=client]',
+            heading: 'select client',
+            data: ['id', 'name']
+        }); 
+
+        /*   $.getJSON('/master/project-status/json', function (data) {
+         $dropdown = $('select[name=status]');
+         $('<option/>').val('').html('select status')
+         .appendTo($dropdown);
+         $.each(data, function (index, row) {
+         $('<option/>').val(row.id).html(row.name)
+         .appendTo($dropdown);
+         })
+         }) */
+        loadcombo({
+//            for status
+            url: '/master/project-status/json',
+            selector: 'select[name=status]',
+            heading: 'select status',
+            data: ['id', 'name']
+        });
+
+        /*    $.getJSON('/employees/json', function (data) {
+         $dropdown = $('select[name=employees]');
+         $('<option/>').val('').html('select Employees')
+         .appendTo($dropdown);
+         $.each(data, function (index, row) {
+         $('<option/>').val(row.id).html(row.fullName)
+         .appendTo($dropdown);
+         })
+         }) */
+        loadcombo({
+//            for employees
+            url: '/employees/json',
+            selector: 'select[name=employees]',
+            heading: 'select Employees',
+            data: ['id', 'fullName']
+        });
         $('.add-btn').on('click', function () {
             var $dialog = $('#form-modal');
-            $dialog.find('#modal-title').html('create ' + pageTitle);
+            $dialog.find('.modal-title').html('create ' + pageTitle);
             $dialog.modal();
             $('input').val('');
             $('select[name=client]').val('');
             $('textarea[name=description]').val('');
+            $('select[name=status]').val('');
             $('input[name=id]').val(0);
             return false;
         });
+
         $('#view-table').on('click', '.edit-btn', function () {
             var $id = $(this).attr('rel');
             $.getJSON('/' + pageURI + '/json/' + $id, function (data) {
                 console.log(data);
                 var $dialog = $('#form-modal');
-                $dialog.find('#modal-title').html('Edit ' + pageTitle);
+                $dialog.find('.modal-title').html('Edit ' + pageTitle);
                 $('input[name=id]').val(data.id);
                 $('input[name=name]').val(data.name);
                 $('input[name=email]').val(data.client);
@@ -137,11 +165,13 @@
             });
             return false;
         });
-        $('#app-form').on('submit', function () {
-            $.post('/' + pageURI + '/json', $(this).serialize(),
+        var $form = $('#app-form');
+        $form.on('submit', function () {
+            $.post('/projects/json/', $(this).serialize(),
                     function (data) {
                         if (data === 'success') {
-                            $('#form-modal').modal('hide');
+                            var $dialog = $('#form-modal');
+                            $dialog.modal('hide');
                             $.get('/' + pageURI + '/table', function (data) {
                                 $('#view-table').html(data);
                             });
@@ -149,6 +179,7 @@
                     });
             return false;
         });
+
         $('.add-category').on('click', function () {
             $('.client-dialog').modal();
         })
@@ -165,54 +196,58 @@
         $('#view-table').on('click', '.emp-detail-btn', function () {
             var $id = $(this).attr('rel');
             $.getJSON('/projects/employees/' + $id, function (data) {
-                $table = $('#employee-list-table tbody');
+                $table = $('#employee-list-table  tbody');
                 $table.find('tr').remove();
                 $.each(data, function (i, row) {
-                    var $tr = $('<tr class="employee-row" data-email="' + row.email + '"/>');
+                    var $tr = $('<tr/>');
                     $('<td/>').html(row.id).appendTo($tr);
-                    $('<td/>').html(row.fullName).appendTo($tr);
+                    $('<td><a href="javascript:void(0);" class="employee-row"  data-email="' + row.email + '">' + row.fullName + '</a></td>').appendTo($tr);
                     $('<td><a data-project-id="' + $id + '" rel="' + row.id + '"  class="btn btn-danger remove-employee"><span class="glyphicon glyphicon-trash"></span></a></td>').appendTo($tr);
                     $table.append($tr);
                 });
                 $('#employees-detail').modal();
             });
 
-            $('#employee-list-table').on('click', '.employee-row', function () {
-                console.log($(this).attr('data-email'));
-                var $email = $(this).attr('data-email');
 
-                $('#employees-detail').find('#inputemail').val($email);
-                $('input[name=selectemail])').html('');
-                return false;
-            })
+        })
+        $('#employee-list-table').on('click', '.employee-row', function () {
 
+            console.log($(this).attr('data-email'));
+            var $email = $(this).attr('data-email');
 
+            $('#employees-detail').find('#inputemail').val($email);
 
-            $("#employee-list-table").on('click', '.remove-employee', function () {
-
-                if (confirm('are you sure to remove ?'))
-                {
-                    var $this = $(this);
-                    $projectId = $this.attr('data-project-id');
-                    $employeeId = $this.attr('rel');
-                    var $data = {
-                        projectId: $projectId,
-                        employeeId: $employeeId
-
-                    };
-                    $.post('/' + pageURI + '/remove-employee', $data, function (data) {
-                        $this.parent().parent().slideUp();
-                        $.get('/' + pageURI + '/table', function (data) {
-                            $('#view-table').html(data);
-                        });
-                    })
-                }
-
-            })
+            return false;
         })
 
+        $('.close-btn').on('click', function () {
+            $('#employees-detail').find('#inputemail').val('');
 
-        $('.datepicker').datepicker();
+        })
+        $(" #employee-list-table").on('click', '.remove-employee', function () {
+
+            if (confirm('are you sure to remove ?'))
+            {
+                var $this = $(this);
+                $projectId = $this.attr('data-project-id');
+                $employeeId = $this.attr('rel');
+                var $data = {
+                    projectId: $projectId,
+                    employeeId: $employeeId
+
+                };
+                $.post('/' + pageURI + '/remove-employee', $data, function (data) {
+                    $this.parent().parent().slideUp();
+                    $.get('/' + pageURI + '/table', function (data) {
+                        $('#view-table').html(data);
+                    });
+                })
+            }
+
+        })
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
 
         $.getJSON('/projects/json', function (data) {
             $('.add-projects').html(data.length);
@@ -223,7 +258,7 @@
         })
 
 
-        $('.client-dialog').on('click', function () {
+        $('#view-table').on('click', '.client-dialog', function () {
             var $id = $(this).attr('rel');
             var $data = $(this).attr('data');
 
@@ -241,8 +276,12 @@
                 $dialog.find('#contact').html(data.contactNo);
                 $dialog.find('#email').html(data.email);
                 $dialog.find('#address').html(data.address);
-
-
+                console.log(data.image);
+                
+                var $clientimage=$('<img src="/img/'+data.image+'" style="padding-left: 40px;" class="rounded" width="200" height="100">');
+                      $('#cimage').html($clientimage);
+              
+              
                 $dialog.modal();
             });
 
@@ -250,8 +289,9 @@
 
 
 
-        $('#view-table').on('click','.btn-add-employees', function () {
+        $('#view-table').on('click', '.btn-add-employees', function () {
             var $id = $(this).attr('rel');
+            $('#add-employee-modal').find('.modal-title').html("Add employees")
             $('#add-employee-form input[name=project]').val($id);
             $.getJSON('/employees/project-notassigned/' + $id, function (data) {
                 $dropdown = $('select[name=employee]');
@@ -259,16 +299,17 @@
                 $('<option/>').val('').html("select employees to add").appendTo($dropdown);
                 $.each(data, function (index, row) {
                     $('<option/>').val(row.id).html(row.fullName).appendTo($dropdown);
-                    
+
                 });
                 $('#add-employee-modal').modal();
-             });
+            });
 
         });
 
         $('#add-employee-form').on('submit', function () {
 
             $.post('/' + pageURI + '/add-employee/', $(this).serialize(), function (data) {
+                
                 $('#add-employee-modal').modal('hide');
                 $.get('/' + pageURI + '/table', function (data) {
                     $('#view-table').html(data);
@@ -279,9 +320,140 @@
 
         $('.client-add-btn').on('click', function () {
             $('#add-client-btn').modal();
+            $('#add-client-btn input').val('');
+            $('#add-client-btn input[name=id]').val(0);
+
+            $('#add-client-btn input[type=checkbox]').attr('checked', false).val(1);
+            return false;
+        })
+
+        $(' #add-client-btn #app-form-modal').on('submit', function () {
+            $.post('/clients/json', $(this).serialize(), function (data) {
+
+                $('#add-client-btn').modal('hide');
+                loadcombo({
+//            for clients
+                    url: '/clients/json',
+                    selector: 'select[name=client]',
+                    heading: 'select client',
+                    data: ['id', 'name']
+                }, function () {
+                    $text = $('#add-client-btn input[name=name]').val();
+                    $('select[name=client] option:contains(' + $text + ')').attr('selected', true);
+
+                });
+
+            })
+            return false;
         })
 
 
+
+
+
+
+
+//delete-btn
+        $('#view-table').on('click', '.delete-btn', function () {
+            var $this = $(this);
+            var $id = $this.attr('rel');
+            var $dialog = $('#delete-dialog');
+            $dialog.find('#delete-form input[name=id]').val($id);
+            $dialog.modal();
+            return false;
+        });
+
+        $('#delete-form').on('submit', function () {
+            var $id = $(this).find('input[name=id]').val();
+            $.get('/' + pageURI + "/delete/" + $id, function (data) {
+                var $dialog = $('#delete-dialog');
+                $dialog.modal('hide');
+                $.get('/' + pageURI + "/table", function (data) {
+                    $('#view-table').html(data);
+                });
+            });
+            return false;
+        });
+
+//        $('#view-table').on('click', '#status-change', function () {
+//            var $data = $(this).attr('rel');
+//            var $statusdata = $(this).attr('status-id');
+//            $.get('/projects/getallStatus/' + $data, function (data) {
+//                var $dropdown = $('select[name=change-status]');
+//                $.each(data, function (index, row) {
+//                    console.log(row.id);
+//                    $('<option value="' + row.id + '" class="optionId">' + row.name + '</option>').appendTo($dropdown);
+//                    const data = JSON.parse(row.id);
+//                    
+//                });
+//            });
+//        });
+
+              $('#view-table').on('click', '.status-change', function () {
+         $('#form-modal-status-change').modal();
+         $('#form-modal-status-change  tbody').find('tr').remove();
+         $('#form-modal-status-change').find('.modal-title').html("Change status")
+         var $data = $(this).attr('rel');
+         
+         $.get('/projects/getallStatus/' + $data, function (data) {
+         
+         var $table = $('#form-modal-status-change  tbody');
+         $.each(data, function (index, row) {
+         var $tr = $('<tr/>');
+         
+         $('<td/>').html(row.id).appendTo($tr);
+         $('<td/>').html(row.name).appendTo($tr);
+         $('<td class="btn btn-warning text-bold set-status" projectId=' + $data + ' statusId=' + row.id + '>Select</td>').appendTo($tr);
+         $tr.appendTo($table);
+         
+         })
+         return false;
+         })
+         
+         })
+         
+//         To change status
+         $('#form-modal-status-change').on('click', '.set-status', function () {
+         var $this = $(this);
+         var $projectId = $this.attr('projectId');
+         var $statusId = $this.attr('statusId');
+         console.log($projectId, $statusId);
+         var $data = {
+         projectId: $projectId,
+         statusId: $statusId
+         };
+         $.post('/projects/changeStatus', $data, function (data) {
+         if (data === 'success') {
+         $this.parent().slideUp();
+         
+         $.get('/projects/table', function (data) {
+            
+         $('#view-table').html(data);
+         chartcombo({
+         json: '/projects/pending/',
+         status: '.pending'
+         });
+         chartcombo({
+         json: '/projects/canceled/',
+         status: '.canceled'
+         });
+         chartcombo({
+         json: '/projects/completed/',
+         status: '.completed'
+         })
+         chartcombo({
+         json: '/projects/workinprogress/',
+         status: '.workinprogress'
+         })
+         });
+         
+         }
+         return false;
+         });
+         
+         });
+         
+        
     });
 
 
