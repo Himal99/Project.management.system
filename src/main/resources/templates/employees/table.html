@@ -21,11 +21,11 @@
                             <td th:text="${record.contactNo}"> </td>
                             <td th:text="${record.panNo}"> </td>
                            
-                            <td th:text="${record.created}"> </td>
+                            <td th:text="${#dates.format(record.created, 'yyyy-MM-DD')}"> </td>
                             <td>
                                 
                                 <span th:if="${record.status}" class="label label-success">Active</span>
-                                <span th:if="${!record.status}" class="label label-success">Active</span>
+                                <span th:if="${!record.status}" class="label label-danger">Inactive</span>
 
                             </td>
                             <td>

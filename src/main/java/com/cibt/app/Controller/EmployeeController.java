@@ -43,7 +43,11 @@ public class EmployeeController extends Crudcontroller<Employee, Integer>{
         return employeeRepository.findEmployeeNotIn(projectId);
     }
        
-   
+   @GetMapping(value = "/getlatestemployees")
+   @ResponseBody
+   public List<Employee> getemployees(){
+       return employeeRepository.findBydesc();
+   }
     
     
     

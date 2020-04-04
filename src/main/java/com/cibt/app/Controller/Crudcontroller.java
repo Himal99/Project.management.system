@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +6,10 @@
  */
 package com.cibt.app.Controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import javax.transaction.Transactional;
 
@@ -14,7 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -30,6 +38,8 @@ public abstract class Crudcontroller<T, Id> extends Sitecontroller {
         model.addAttribute("records", repository.findAll());
         return viewpath + "/index";
     }
+    
+    
 //    to call table in ajax
 
     @GetMapping(value = "/table")
@@ -58,12 +68,12 @@ public abstract class Crudcontroller<T, Id> extends Sitecontroller {
 
     }
 
-    @PostMapping
-    public String save(T model) {
-        repository.save(model);
-        return "redirect:/" + pageURI;
-
-    }
+//    @PostMapping
+//    public String save(T model) {
+//        repository.save(model);
+//        return "redirect:/" + pageURI;
+//
+//    }
 
     @PostMapping(value = "/json")
     @ResponseBody
@@ -74,6 +84,7 @@ public abstract class Crudcontroller<T, Id> extends Sitecontroller {
     }
 
     @GetMapping(value = "/json")
+    
     @ResponseBody
     public List<T> json() {
         return repository.findAll();
@@ -91,4 +102,5 @@ public abstract class Crudcontroller<T, Id> extends Sitecontroller {
         return viewpath+"/edit";
     }
 
+    
 }

@@ -29,53 +29,89 @@
 
 <!-- Modal -->
 <div th:include="${viewpath}+'/components/form-dialog'"></div>
-    <div th:replace="shared/footer"></div>
 
-    <script>
-        $(document).ready(function () {
+<div th:replace="shared/footer"></div>
 
-            $('.add-btn').on('click', function () {
+<script>
+    $(document).ready(function () {
+
+        $('.add-btn').on('click', function () {
+            var $dialog = $('#form-modal');
+            $dialog.find('#modal-title').html('create ' + pageTitle);
+            $dialog.modal();
+            $('input').val('');
+            $('input[type=checkbox]').attr('checked', false).val('1');
+            $('input[name=id]').val(0);
+            return false;
+        });
+        $('#view-table').on('click', '.edit-btn', function () {
+            var $id = $(this).attr('rel');
+            $.getJSON('/' + pageURI + '/json/' + $id, function (data) {
+                console.log(data);
                 var $dialog = $('#form-modal');
-                $dialog.find('#modal-title').html('create ' + pageTitle);
+                $dialog.find('#modal-title').html('Edit ' + pageTitle);
+                $('input[name=id]').val(data.id);
+                $('input[name=name]').val(data.name);
+                $('input[name=email]').val(data.email);
+                $('input[name=address]').val(data.address);
+                $('input[name=contactNo]').val(data.contactNo);
+                $('input[name=website]').val(data.website);
+                $('input[name=status]').attr('checked', data.status);
                 $dialog.modal();
-                $('input').val('');
-                $('input[type=checkbox]').attr('checked',false).val('1');
-                $('input[name=id]').val(0);
-                return false;
             });
-            $('#view-table').on('click','.edit-btn', function () {
-                var $id = $(this).attr('rel');
-                $.getJSON('/' + pageURI + '/json/' + $id, function (data) {
-                    console.log(data);
-                    var $dialog = $('#form-modal');
-                    $dialog.find('#modal-title').html('Edit ' + pageTitle);
-                    $('input[name=id]').val(data.id);
-                    $('input[name=name]').val(data.name);
-                    $('input[name=email]').val(data.email);
-                    $('input[name=address]').val(data.address);
-                    $('input[name=contactNo]').val(data.contactNo);
-                    $('input[name=website]').val(data.website);
-                     $('input[name=status]').attr('checked', data.status);
-                    $dialog.modal();
+            return false;
+        });
+ 
+// SAVE A CLIENT FROM JQUERY
+//        $('#app-form').on('submit', function () {
+//           
+//            
+//       
+//            $.post('/clients/json/',$(this).serialize(),function (data){
+//               
+//            })
+//           
+//            return false;
+//        });
 
+//SAVE A CLIENTS AND FILE FROM AJAX
+
+        $("#app-form").on("click",'#saveme', function () {
+               
+                var file = $("#file").val();
+                // Get form
+                var form = $('#app-form')[0];
+                var data = new FormData(form);
+                
+//                alert(data);
+                var str = JSON.stringify(data);
+                
+//               console.log(data);
+             
+
+
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    data: data,
+                    url: "/clients/saveEmployee",
+                    processData: false, //prevent jQuery from automatically transforming the data into a query string
+                    contentType: false, // tell jQuery not to set contentType
+                    cache: false,
+                    success: function (data) {
+                         $.get('/' + pageURI + "/table", function (data) {
+                    $('#view-table').html(data);
                 });
-                return false;
-            });
-            
-            $('#app-form').on('submit', function(){
-                $.post('/' + pageURI +'/json',$(this).serialize(),
-                function (data){
-                    if(data==='success'){
-                       $('#form-modal').modal('hide');
-                       $.get('/' + pageURI +'/table',function (data){
-                           $('#view-table').html(data);
-                       })
+                       
+                    },
+                    error: function (e) {
+                        
                     }
                 });
-                return false;
+                  $('#form-modal').modal('hide');
+                    return false;
             });
 
+    });
 
-
-        });
-    </script>
+</script>

@@ -6,73 +6,80 @@
                 <h4 class="modal-title">Client-Detail</h4>
             </div>
             <div class="modal-body col-md-12">
-              <!--/  <p><strong>Name:</strong> <span id="name"></span></p>
-                <p><strong>Contact</strong> <span id="contact"></span></p>
-                <p><strong>Email</strong> <span id="email"></span></p>
-                <p><strong>Address</strong> <span id="address"></span></p>
+                <!--/  <p><strong>Name:</strong> <span id="name"></span></p>
+                  <p><strong>Contact</strong> <span id="contact"></span></p>
+                  <p><strong>Email</strong> <span id="email"></span></p>
+                  <p><strong>Address</strong> <span id="address"></span></p>
                 -->
                 <div class="col-md-12 row">
-                    
-                <div class="box-body box-profile col-md-6  ">
-                    
-              <img class="profile-user-img img-responsive img-circle" src="../..//webjars/adminlte/2.3.11/dist/img/user4-128x128.jpg" alt="User profile picture">
 
-              <h3 class="profile-username text-center"><span span id="name"></span></h3>
+                    <div class="box-body box-profile col-md-6">
 
-             
+                        <div id='cimage'>
+                            
+                        
+                          
+                        </div>
+                        <h3 class="profile-username text-center"><span span id="name"></span></h3>
 
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                    <b>Contact :</b> <a class="pull-right"><span id="contact" ></span></a>
-                </li>
-                <li class="list-group-item">
-                    <b>Email :</b> <a class="pull-right"><span id="email"></span></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Friends</b> <a class="pull-right">13,287</a>
-                </li>
-              </ul>
 
-              <a href="#" class="btn btn-primary btn-block"><b>Send Email</b></a>
-               
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Contact :</b> <a class="pull-right"><span id="contact" ></span></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email :</b> <a class="pull-right"><span id="email"></span></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Friends</b> <a class="pull-right">13,287</a>
+                            </li>
+                        </ul>
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                            <p><input type="file" id="change" name="files" multiple style="display: none" ></p>
+
+
+                            <a href="#" class="btn btn-primary btn-block" id="changepp"><label for="file" style="cursor: pointer;">Change profile picture</label></a>
+                            <input class="btn btn-primary btn-block" type="submit" value="Upload Files">
+                        </form>
+                    </div>
+
+
+
+                    <!-- /.box-header -->
+                    <div class="box-body col-md-6">
+                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+
+                        <p class="text-muted">
+                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                        <p class="text-muted"><span id="address"></span></p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-pencil margin-r-5"></i>Project</strong>
+
+                        <p id="project" class="btn-default">
+
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i>Project Description</strong>
+
+                        <p id="description"></p>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                  
-          
-            
-            <!-- /.box-header -->
-            <div class="box-body col-md-6">
-              <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
 
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-              <p class="text-muted"><span id="address"></span></p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i>Project</strong>
-
-              <p id="project" class="btn-default">
-                
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i>Project Description</strong>
-
-              <p id="description"></p>
-            </div>
-            <!-- /.box-body -->
-          </div>
-              
 
             </div>
-            
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -81,3 +88,10 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
+    $(document).ready(function () {
+        $('#changepp').on('click', function () {
+            $("#change").click();
+        })
+    })
+</script>

@@ -1,0 +1,17 @@
+<div th:replace="shared/header"></div>
+<div ng-app="myApp">
+    <div ng-controller="profilesAjax" class="container" style="width: 500px;"></div>
+    Profile:<input type="text" ng-model="username" name="username" ng-change="getProfiles()">
+    <br>
+    <table>
+        <tr>
+            <th>name</th>
+        </tr> 
+        <tr>
+        <d>{{scope.name}}</d>
+        </tr>
+    </table>
+    
+    
+</div>
+<div th:replace="shared/footer"></div>

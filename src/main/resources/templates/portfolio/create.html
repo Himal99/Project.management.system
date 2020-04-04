@@ -1,0 +1,44 @@
+<div th:replace="shared/header"></div>
+
+<div class="col-md-8">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"></h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" method="post" action="/portfolio">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>heading </label>
+                  <input type="text" name="heading" class="form-control"  >
+                </div>
+                   <div class="form-group">
+                  <label>detail </label>
+                  <textarea name="detail" class="form-control"></textarea>
+                </div>
+                   <div class="form-group">
+                  <label>Website </label>
+                  <input type="text" name="website" class="form-control"  >
+                </div>
+                  
+                 
+                
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                 
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/portfolio"
+                <button  class="btn btn-flat">Back</button>
+                 
+                </a>
+                              
+              </div>
+            </form>
+          </div>
+</div>
+
+
+<div th:replace="shared/footer"></div>

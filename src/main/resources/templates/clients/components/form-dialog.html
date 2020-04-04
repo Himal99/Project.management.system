@@ -6,7 +6,7 @@
                 <h4 class="modal-title" id="modal-title">Modal title</h4>
             </div>
 
-            <form id="app-form" method="post">
+            <form id="app-form" name="register-form" action="/clients" >
 
                 <div class="modal-body">
                     <div class="row">
@@ -57,17 +57,43 @@
                                 <label>  <input type="checkbox" name="status" value="1" />Active</label>
 
                             </div>
+                            <div class="form-group">
+                          <a href="#" class="btn btn-primary"><label for="file" style="cursor: pointer;"> profile picture</label></a>
+                        <input type="file" name="file" accept="*" id="file" style="display: none" />
+                        <div class="help-block" id="error_file"></div>
+                    </div>
                         </div>
+                        
 
 
                     </div>
+                    
                 </div>
            
             <div class="modal-footer">
                 <input type="hidden" name="id"/>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success" id="saveme">Save</button>
             </div>
                  </form>
+            
+           
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                           
+                    </div>
+                    
+                </div>
+           
+            <div class="modal-footer">
+                
+               
+            </div>
+                
+           
         </div>
     </div>
+    
+</div>
